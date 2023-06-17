@@ -18,7 +18,115 @@ import teammates.test.BaseTestCase;
 public class TimeHelperTest extends BaseTestCase {
 
     private static final String DATETIME_DISPLAY_FORMAT = "EEE, dd MMM yyyy, hh:mm a z";
+    
+    @Test
+    public void formatInstant_TestValidParameters() {
+        Instant instant = Instant.parse("2023-06-17T10:15:30Z");
+        String timeZone = "America/New_York";
+        String pattern = "yyyy-MM-dd HH:mm:ss";
+        String expectedOutput = "2023-06-17 06:15:30";
 
+        String result = TimeHelper.formatInstant(instant, timeZone, pattern);
+
+        assertEquals(expectedOutput, result);
+    }
+
+    @Test
+    public void formatInstant_TestNullInstant() {
+        Instant instant = null;
+        String timeZone = "America/New_York";
+        String pattern = "yyyy-MM-dd HH:mm:ss";
+        String expectedOutput = "";
+
+        String result = TimeHelper.formatInstant(instant, timeZone, pattern);
+
+        assertEquals(expectedOutput, result);
+    }
+
+    @Test
+    public void formatInstant_TestNullTimeZone() {
+        Instant instant = Instant.parse("2023-06-17T10:15:30Z");
+        String timeZone = null;
+        String pattern = "yyyy-MM-dd HH:mm:ss";
+        String expectedOutput = "";
+
+        String result = TimeHelper.formatInstant(instant, timeZone, pattern);
+
+        assertEquals(expectedOutput, result);
+    }
+
+    @Test
+    public void formatInstant_TestNullPattern() {
+        Instant instant = Instant.parse("2023-06-17T10:15:30Z");
+        String timeZone = "America/New_York";
+        String pattern = null;
+        String expectedOutput = "";
+
+        String result = TimeHelper.formatInstant(instant, timeZone, pattern);
+
+        assertEquals(expectedOutput, result);
+    }
+
+    @Test
+    public void formatInstant_TestNoonHour() {
+        Instant instant = Instant.parse("2023-06-17T12:00:00Z");
+        String timeZone = "UTC";
+        String pattern = "hh:mm a";
+        String expectedOutput = "12:00 NOON";
+
+        String result = TimeHelper.formatInstant(instant, timeZone, pattern);
+
+        assertEquals(expectedOutput, result);
+    }
+
+    @Test
+    public void formatInstant_TestNonNoonHour_RightHour() {
+        Instant instant = Instant.parse("2023-06-17T12:15:30Z");
+        String timeZone = "UTC";
+        String pattern = "hh:mm a";
+        String expectedOutput = "12:15 PM";
+
+        String result = TimeHelper.formatInstant(instant, timeZone, pattern);
+
+        assertEquals(expectedOutput, result);
+    }
+
+    @Test
+    public void formatInstant_TestNonNoonHour_RightMinute() {
+        Instant instant = Instant.parse("2023-06-17T10:00:30Z");
+        String timeZone = "UTC";
+        String pattern = "hh:mm a";
+        String expectedOutput = "10:00 AM";
+
+        String result = TimeHelper.formatInstant(instant, timeZone, pattern);
+
+        assertEquals(expectedOutput, result);
+    }
+
+    @Test
+    public void formatInstant_TestNonNoonHour() {
+        Instant instant = Instant.parse("2023-06-17T10:15:30Z");
+        String timeZone = "UTC";
+        String pattern = "hh:mm a";
+        String expectedOutput = "10:15 AM";
+
+        String result = TimeHelper.formatInstant(instant, timeZone, pattern);
+
+        assertEquals(expectedOutput, result);
+    }
+
+    @Test
+    public void formatInstant_TestAllParametersNull() {
+        Instant instant = null;
+        String timeZone = null;
+        String pattern = null;
+        String expectedOutput = "";
+
+        String result = TimeHelper.formatInstant(instant, timeZone, pattern);
+
+        assertEquals(expectedOutput, result);
+    }
+    
     @Test
     public void testEndOfYearDates() {
         LocalDateTime date = LocalDateTime.of(2015, Month.DECEMBER, 30, 12, 0);
